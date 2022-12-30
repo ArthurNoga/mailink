@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
+
 import './App.css';
+import Layout from "./Layout/Layout";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import Domain from "./Pages/Domain";
+import Ips from "./Pages/Ips";
+import Faq from "./Pages/Faq";
+import {ThemeProvider} from "@emotion/react";
+import {createTheme} from "@mui/material";
+import {orange} from "@mui/material/colors";
+
+const themeDark = createTheme({palette: {primary:orange,mode: "dark"},});
+const themeLight = createTheme({palette: {mode: "light"}})
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [theme, setTheme] = useState(true)
+
+    const toogleTheme = () => {
+        setTheme(!theme)
+    }
+    return (
+        <ThemeProvider  theme={theme==false?themeDark:themeLight}>
+            <BrowserRouter>
+                <Routes>
+                    <Route element={<Layout toggleTheme={toogleTheme}/>}>
+                        <Route path="/" element={<Domain/>}/>
+                        <Route path="/domain" element={<Domain/>}/>
+                        <Route path="/ip" element={<Ips/>}/>
+                        <Route path="/faq" element={<Faq/>}/>
+                    </Route>
+                </Routes>
+            </BrowserRouter>
+        </ThemeProvider>
+
+    );
 }
 
 export default App;
